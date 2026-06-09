@@ -3,24 +3,35 @@ let tasks = [];
 const addBtn =
 document.getElementById("addBtn");
 
-addBtn.addEventListener("click", addTask);
+addBtn.addEventListener(
+"click",
+addTask
+);
 
 function addTask(){
 
     const taskInput =
-    document.getElementById("taskInput");
+    document.getElementById(
+    "taskInput"
+    );
 
     const hourInput =
-    document.getElementById("hourInput");
+    document.getElementById(
+    "hourInput"
+    );
 
     if(taskInput.value===""){
         return;
     }
 
     const task = {
+
         name: taskInput.value,
+
         hour: hourInput.value,
+
         completed:false
+
     };
 
     tasks.push(task);
@@ -36,29 +47,54 @@ function addTask(){
 function renderTasks(){
 
     const list =
-    document.getElementById("taskList");
+    document.getElementById(
+    "taskList"
+    );
 
     list.innerHTML="";
 
     tasks.forEach((task,index)=>{
 
         const li =
-        document.createElement("li");
+        document.createElement(
+        "li"
+        );
 
-        li.innerHTML=`
-        <input type="checkbox"
-        ${task.completed ? "checked" : ""}
+        li.innerHTML = `
+
+        <div>
+
+        <input
+        type="checkbox"
+
+        ${task.completed ?
+        "checked" : ""}
+
         onchange="toggleTask(${index})">
+
+        <span class="${
+        task.completed ?
+        'completed' : ''
+        }">
 
         ${task.name}
         (${task.hour}시간)
 
-        <button onclick="deleteTask(${index})">
+        </span>
+
+        </div>
+
+        <button
+        onclick="deleteTask(${index})">
+
         삭제
+
         </button>
+
         `;
 
         list.appendChild(li);
+
     });
 
     updateStats();
@@ -85,7 +121,8 @@ function deleteTask(index){
 
 function updateStats(){
 
-    const total = tasks.length;
+    const total =
+    tasks.length;
 
     const completed =
     tasks.filter(task =>
@@ -93,34 +130,84 @@ function updateStats(){
 
     const percent =
     total===0 ? 0 :
-    Math.round(completed/total*100);
+    Math.round(
+    completed/total*100
+    );
+
+    const totalHours =
+    tasks.reduce(
+
+        (sum, task) =>
+
+        sum +
+        Number(task.hour),
+
+        0
+
+    );
 
     document.getElementById(
-    "totalCount").innerText=total;
+    "totalCount"
+    ).innerText = total;
 
     document.getElementById(
-    "completedCount").innerText=completed;
+    "completedCount"
+    ).innerText = completed;
 
     document.getElementById(
-    "progressPercent").innerText=percent;
+    "progressPercent"
+    ).innerText = percent;
 
     document.getElementById(
-    "progressFill").style.width=
-    percent+"%";
+    "totalHours"
+    ).innerText = totalHours;
+
+    document.getElementById(
+    "progressFill"
+    ).style.width =
+    percent + "%";
+
+    const successMessage =
+    document.getElementById(
+    "successMessage"
+    );
+
+    if(
+    total > 0 &&
+    percent === 100
+    ){
+
+        successMessage.style.display =
+        "block";
+
+    }
+    else{
+
+        successMessage.style.display =
+        "none";
+
+    }
+
 }
 
 function saveTasks(){
 
     localStorage.setItem(
+
     "tasks",
+
     JSON.stringify(tasks)
+
     );
+
 }
 
 function loadTasks(){
 
     const saved =
-    localStorage.getItem("tasks");
+    localStorage.getItem(
+    "tasks"
+    );
 
     if(saved){
 
@@ -128,11 +215,38 @@ function loadTasks(){
         JSON.parse(saved);
 
         renderTasks();
+
     }
+
 }
 
-loadTasks();
-const today = new Date();
+const today =
+new Date();
 
-document.getElementById("todayDate").innerText =
-today.toLocaleDateString("ko-KR");
+document.getElementById(
+"todayDate"
+).innerText =
+today.toLocaleDateString(
+"ko-KR"
+);
+
+const darkBtn =
+document.getElementById(
+"darkModeBtn"
+);
+
+darkBtn.addEventListener(
+
+"click",
+
+() => {
+
+document.body.classList.toggle(
+"dark-mode"
+);
+
+}
+
+);
+
+loadTasks();
