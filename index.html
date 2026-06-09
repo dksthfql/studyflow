@@ -12,25 +12,38 @@
 <body>
 
     <header>
+
         <h1>StudyFlow</h1>
+
+        <p id="todayDate"></p>
+
+        <button id="darkModeBtn">
+            🌙 다크모드
+        </button>
+
     </header>
 
     <section id="home">
+
         <h2>공부 루틴 관리 웹</h2>
+
         <p>매일의 공부를 관리하세요.</p>
+
     </section>
 
     <section id="goal">
 
         <h2>오늘의 목표</h2>
 
-        <input type="text"
-               id="taskInput"
-               placeholder="공부 목표 입력">
+        <input
+            type="text"
+            id="taskInput"
+            placeholder="공부 목표 입력">
 
-        <input type="number"
-               id="hourInput"
-               placeholder="공부 시간">
+        <input
+            type="number"
+            id="hourInput"
+            placeholder="공부 시간">
 
         <button id="addBtn">
             추가하기
@@ -50,25 +63,37 @@
 
         <h2>학습 통계</h2>
 
-        <p>전체 목표 :
+        <p>
+            전체 목표 :
             <span id="totalCount">0</span>
         </p>
 
-        <p>완료 :
+        <p>
+            완료 :
             <span id="completedCount">0</span>
         </p>
 
-        <p>진행률 :
+        <p>
+            진행률 :
             <span id="progressPercent">0</span>%
+        </p>
+
+        <p>
+            총 공부시간 :
+            <span id="totalHours">0</span>시간
         </p>
 
         <div class="progress-bar">
             <div id="progressFill"></div>
         </div>
 
+        <div id="successMessage">
+            🎉 오늘 목표를 모두 달성했습니다!
+        </div>
+
     </section>
 
-    <script src="js/script.js"></script>
+    <script src="./js/script.js"></script>
 
 </body>
 
