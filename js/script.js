@@ -1,252 +1,216 @@
 let tasks = [];
 
-const addBtn =
-document.getElementById("addBtn");
+const addBtn = document.getElementById("addBtn");
+addBtn.addEventListener("click", addTask);
 
-addBtn.addEventListener(
-"click",
-addTask
-);
-
-function addTask(){
+function addTask() {
 
     const taskInput =
-    document.getElementById(
-    "taskInput"
-    );
+        document.getElementById("taskInput");
 
     const hourInput =
-    document.getElementById(
-    "hourInput"
-    );
+        document.getElementById("hourInput");
 
-    if(taskInput.value===""){
+    if (taskInput.value === "") {
+        alert("공부 목표를 입력하세요!");
         return;
     }
 
     const task = {
-
         name: taskInput.value,
-
-        hour: hourInput.value,
-
-        completed:false
-
+        hour: Number(hourInput.value) || 0,
+        completed: false
     };
 
     tasks.push(task);
 
     saveTasks();
-
     renderTasks();
 
-    taskInput.value="";
-    hourInput.value="";
+    taskInput.value = "";
+    hourInput.value = "";
 }
 
-function renderTasks(){
+function renderTasks() {
 
     const list =
-    document.getElementById(
-    "taskList"
-    );
+        document.getElementById("taskList");
 
-    list.innerHTML="";
+    list.innerHTML = "";
 
-    tasks.forEach((task,index)=>{
+    tasks.forEach((task, index) => {
 
         const li =
-        document.createElement(
-        "li"
-        );
+            document.createElement("li");
+
+        li.className =
+            task.completed ? "completed" : "";
 
         li.innerHTML = `
-
         <div>
+            <input type="checkbox"
+            ${task.completed ? "checked" : ""}
+            onchange="toggleTask(${index})">
 
-        <input
-        type="checkbox"
-
-        ${task.completed ?
-        "checked" : ""}
-
-        onchange="toggleTask(${index})">
-
-        <span class="${
-        task.completed ?
-        'completed' : ''
-        }">
-
-        ${task.name}
-        (${task.hour}시간)
-
-        </span>
-
+            ${task.name}
+            (${task.hour}시간)
         </div>
 
-        <button
-        onclick="deleteTask(${index})">
-
+        <button onclick="deleteTask(${index})">
         삭제
-
         </button>
-
         `;
 
         list.appendChild(li);
-
     });
 
     updateStats();
 }
 
-function toggleTask(index){
+function toggleTask(index) {
 
     tasks[index].completed =
-    !tasks[index].completed;
+        !tasks[index].completed;
 
     saveTasks();
-
     renderTasks();
 }
 
-function deleteTask(index){
+function deleteTask(index) {
 
-    tasks.splice(index,1);
+    tasks.splice(index, 1);
 
     saveTasks();
-
     renderTasks();
 }
 
-function updateStats(){
+function updateStats() {
 
-    const total =
-    tasks.length;
+    const total = tasks.length;
 
     const completed =
-    tasks.filter(task =>
-    task.completed).length;
+        tasks.filter(task =>
+            task.completed).length;
 
     const percent =
-    total===0 ? 0 :
-    Math.round(
-    completed/total*100
-    );
+        total === 0 ? 0 :
+        Math.round(completed / total * 100);
 
     const totalHours =
-    tasks.reduce(
-
-        (sum, task) =>
-
-        sum +
-        Number(task.hour),
-
-        0
-
-    );
+        tasks.reduce((sum, task) =>
+            sum + Number(task.hour || 0), 0);
 
     document.getElementById(
-    "totalCount"
-    ).innerText = total;
+        "totalCount").innerText = total;
 
     document.getElementById(
-    "completedCount"
-    ).innerText = completed;
+        "completedCount").innerText = completed;
 
     document.getElementById(
-    "progressPercent"
-    ).innerText = percent;
+        "progressPercent").innerText = percent;
 
     document.getElementById(
-    "totalHours"
-    ).innerText = totalHours;
+        "totalHours").innerText = totalHours;
 
     document.getElementById(
-    "progressFill"
-    ).style.width =
-    percent + "%";
+        "progressFill").style.width =
+        percent + "%";
+
+    /* 축하 메시지 */
 
     const successMessage =
-    document.getElementById(
-    "successMessage"
-    );
+        document.getElementById(
+            "successMessage");
 
-    if(
-    total > 0 &&
-    percent === 100
-    ){
+    if (total > 0 &&
+        completed === total) {
 
         successMessage.style.display =
-        "block";
+            "block";
 
-    }
-    else{
+    } else {
 
         successMessage.style.display =
-        "none";
-
+            "none";
     }
-
 }
 
-function saveTasks(){
+function saveTasks() {
 
     localStorage.setItem(
-
-    "tasks",
-
-    JSON.stringify(tasks)
-
+        "tasks",
+        JSON.stringify(tasks)
     );
-
 }
 
-function loadTasks(){
+function loadTasks() {
 
     const saved =
-    localStorage.getItem(
-    "tasks"
-    );
+        localStorage.getItem("tasks");
 
-    if(saved){
+    if (saved) {
 
         tasks =
-        JSON.parse(saved);
+            JSON.parse(saved);
 
         renderTasks();
-
     }
-
 }
-
-const today =
-new Date();
-
-document.getElementById(
-"todayDate"
-).innerText =
-today.toLocaleDateString(
-"ko-KR"
-);
-
-const darkBtn =
-document.getElementById(
-"darkModeBtn"
-);
-
-darkBtn.addEventListener(
-
-"click",
-
-() => {
-
-document.body.classList.toggle(
-"dark-mode"
-);
-
-}
-
-);
 
 loadTasks();
+
+/* 오늘 날짜 */
+
+const today = new Date();
+
+document.getElementById("todayDate").innerText =
+    today.toLocaleDateString("ko-KR");
+
+/* 다크모드 */
+
+const darkModeBtn =
+    document.getElementById("darkModeBtn");
+
+darkModeBtn.addEventListener("click", () => {
+
+    document.body.classList.toggle("dark-mode");
+
+    if (document.body.classList.contains("dark-mode")) {
+
+        localStorage.setItem(
+            "darkMode",
+            "enabled"
+        );
+
+        darkModeBtn.innerText =
+            "☀️ 라이트모드";
+
+    } else {
+
+        localStorage.setItem(
+            "darkMode",
+            "disabled"
+        );
+
+        darkModeBtn.innerText =
+            "🌙 다크모드";
+    }
+});
+
+if (localStorage.getItem("darkMode") === "enabled") {
+
+    document.body.classList.add("dark-mode");
+
+    darkModeBtn.innerText =
+        "☀️ 라이트모드";
+}
+
+/* 엔터키 추가 */
+
+document.getElementById("taskInput")
+    .addEventListener("keypress", function (e) {
+
+        if (e.key === "Enter") {
+            addTask();
+        }
+    });
