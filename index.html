@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StudyFlow</title>
 
+    <!-- CSS 연결 -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
     <header>
-
         <h1>StudyFlow</h1>
 
         <p id="todayDate"></p>
@@ -20,8 +20,15 @@
         <button id="darkModeBtn">
             🌙 다크모드
         </button>
-
     </header>
+
+    <nav>
+        <a href="#home">홈</a>
+        <a href="#goal">목표</a>
+        <a href="#routine">루틴</a>
+        <a href="#gallery">갤러리</a>
+        <a href="#stats">통계</a>
+    </nav>
 
     <section id="home">
 
@@ -59,6 +66,27 @@
 
     </section>
 
+    <section id="gallery">
+
+        <h2>학습 갤러리</h2>
+
+        <div class="gallery">
+
+            <img src="images/study1.jpg" alt="공부 이미지1">
+
+            <img src="images/study2.jpg" alt="공부 이미지2">
+
+            <img src="images/study3.jpg" alt="공부 이미지3">
+
+        </div>
+
+        <p>
+            이미지 출처 :
+            Pixabay
+        </p>
+
+    </section>
+
     <section id="stats">
 
         <h2>학습 통계</h2>
@@ -93,8 +121,8 @@
 
     </section>
 
-    <script src="./js/script.js"></script>
+    <!-- JS 연결 -->
+    <script src="js/script.js"></script>
 
 </body>
-
 </html>
